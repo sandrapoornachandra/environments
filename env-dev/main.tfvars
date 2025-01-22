@@ -3,6 +3,7 @@ default_vpc_cidr           = "172.31.0.0/16"
 default_vpc_route_table_id = "rtb-0a912ce6b1f56e5a1"
 zone_id                    = "Z050201124IFD7TBJ5IEA"
 env                        = "dev"
+acm_certificate_arn        = "arn:aws:acm:us-east-1:571600849080:certificate/9625da36-8db8-46c6-b736-5f9a53878c04"
 
 
 tags = {
