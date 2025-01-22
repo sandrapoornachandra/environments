@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "git::https://github.com/raghudevopsb74/tf-module-vpc.git"
+  source = "git::https://github.com/sandrapoornachandra/tf-module-vpc.git"
 
   for_each                   = var.vpc
   cidr                       = each.value["cidr"]
@@ -12,7 +12,7 @@ module "vpc" {
 }
 
 module "alb" {
- source = "git::https://github.com/raghudevopsb74/tf-module-alb.git"
+ source = "git::https://github.com/sandrapoornachandra/tf-module-alb.git"
 
  for_each            = var.alb
  internal            = each.value["internal"]
@@ -27,7 +27,7 @@ module "alb" {
 }
 
 module "docdb" {
-  source = "git::https://github.com/raghudevopsb74/tf-module-docdb.git"
+  source = "git::https://github.com/sandrapoornachandra/tf-module-docdb.git"
   tags   = var.tags
   env    = var.env
 
@@ -46,7 +46,7 @@ module "docdb" {
 }
 
 module "rds" {
-  source = "git::https://github.com/raghudevopsb74/tf-module-rds.git"
+  source = "git::https://github.com/sandrapoornachandra/tf-module-rds.git"
   tags   = var.tags
   env    = var.env
 
@@ -69,7 +69,7 @@ module "rds" {
 }
 
 module "elasticache" {
-  source = "git::https://github.com/raghudevopsb74/tf-module-elasticache.git"
+  source = "git::https://github.com/sandrapoornachandra/tf-module-elasticache.git"
   tags   = var.tags
   env    = var.env
 
@@ -88,7 +88,7 @@ module "elasticache" {
 }
 
 module "rabbitmq" {
-  source  = "git::https://github.com/raghudevopsb74/tf-module-rabbitmq.git"
+  source  = "git::https://github.com/sandrapoornachandra/tf-module-rabbitmq.git"
   tags    = var.tags
   env     = var.env
   zone_id = var.zone_id
@@ -104,7 +104,7 @@ module "rabbitmq" {
 
 module "app" {
  depends_on = [module.docdb, module.alb, module.elasticache, module.rabbitmq, module.rds]
- source     = "git::https://github.com/raghudevopsb74/tf-module-app.git"
+ source     = "git::https://github.com/sandrapoornachandra/tf-module-app.git"
 
  tags                    = merge(var.tags, each.value["tags"])
  env                     = var.env
