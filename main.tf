@@ -68,66 +68,6 @@ module "rds" {
 
 }
 
-module "elasticache" {
-  source = "git::https://github.com/sandrapoornachandra/tf-module-elasticache.git"
-  tags   = var.tags
-  env    = var.env
-
-  for_each = var.elasticache
-
-  subnet_ids       = local.db_subnets
-  vpc_id           = local.vpc_id
-  sg_ingress_cidr  = local.app_subnets_cidr
-  elasticache_type = each.value["elasticache_type"]
-  family           = each.value["family"]
-  port             = each.value["port"]
-  engine           = each.value["engine"]
-  node_type        = each.value["node_type"]
-  num_cache_nodes  = each.value["num_cache_nodes"]
-  engine_version   = each.value["engine_version"]
-}
-
-module "rabbitmq" {
-  source  = "git::https://github.com/sandrapoornachandra/tf-module-rabbitmq.git"
-  tags    = var.tags
-  env     = var.env
-  zone_id = var.zone_id
-
-  for_each = var.rabbitmq
-
-  subnet_ids       = local.db_subnets
-  vpc_id           = local.vpc_id
-  sg_ingress_cidr  = local.app_subnets_cidr
-  instance_type    = each.value["instance_type"]
-
-}
-
-module "app" {
- depends_on = [module.docdb, module.alb, module.elasticache, module.rabbitmq, module.rds]
- source     = "git::https://github.com/sandrapoornachandra/tf-module-app.git"
-
- tags                    = merge(var.tags, each.value["tags"])
- env                     = var.env
- zone_id                 = var.zone_id
- default_vpc_id          = var.default_vpc_id
 
 
- for_each         = var.apps
- component        = each.key
- port             = each.value["port"]
- instance_type    = each.value["instance_type"]
- desired_capacity = each.value["desired_capacity"]
- max_size         = each.value["max_size"]
- min_size         = each.value["min_size"]
- lb_priority      = each.value["lb_priority"]
- parameters       = each.value["parameters"]
 
- sg_ingress_cidr = local.app_subnets_cidr
- vpc_id          = local.vpc_id
- subnet_ids      = local.app_subnets
-
- private_alb_name = lookup(lookup(lookup(module.alb, "private", null), "alb", null), "dns_name", null)
- public_alb_name  = lookup(lookup(lookup(module.alb, "public", null), "alb", null), "dns_name", null)
- private_listener = lookup(lookup(lookup(module.alb, "private", null), "listener", null), "arn", null)
- public_listener  = lookup(lookup(lookup(module.alb, "public", null), "listener", null), "arn", null)
-}
