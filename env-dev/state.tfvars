@@ -1,3 +1,3 @@
-bucket = "tf-state-db74"
-key    = "dev/taski-transportation.tfstate"
+bucket = "taski-transportation"
+key    = "dev/terraform.tfstate"
 region = "us-east-1"
