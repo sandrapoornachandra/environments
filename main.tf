@@ -1,6 +1,6 @@
 module "vpc" {
-  source                     = "git::https://github.com/SPOORNACHANDRA/vpc.git"
-  for_each                   = var.vpc      #this is for how many times i have to iterate
+  source                     = "git::https://github.com/sandrapoornachandra/vpc.git"
+  for_each                   = var.vpc
   cidr                       = each.value["cidr"]
   subnets                    = each.value["subnets"]
   default_vpc_id             = var.default_vpc_id
